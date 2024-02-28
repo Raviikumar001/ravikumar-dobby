@@ -36,7 +36,7 @@ const imagesSlice = createSlice({
 
       fetchImagesSuccess(state, action: PayloadAction<Image[]>) { 
         state.loading = false;
-        state.images = action.payload; 
+        state.images = action.payload.reverse(); 
       },
 
     uploadImageStart(state) {
