@@ -18,7 +18,7 @@ Navigate to Project Directory:
 
 Bash
 ```
-cd ravikumar-dobby.
+cd ravikumar-dobby
 ```
 Frontend Setup
 
