@@ -1,15 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-
 const Home: React.FC = () => {
   return (
-    <div>
-      <div className="grid justify-center h-screen">
+    <div className="w-[100%]">
+      <div className="grid justify-center h-screen w-full ">
         <div
           className="
-       relative
-        grid place-content-center
+          relative-container
+        grid
+        
+        place-content-center
         border
         rounded-lg
         shadow-lg
@@ -17,16 +18,24 @@ const Home: React.FC = () => {
         p-10
         border-gray-300
         h-[80%]
+
+        m-2
         "
         >
+          <h2
+            className="text-center font-bold text-lg
+             
+             
+             "
+          >
+            <Link to="/">PhotoUp</Link>
+          </h2>
+
           <img
             src="/images/home2.jpg"
             alt="forests"
             className="
-            z-10
-           object-cover h-48 w-80
-           rounded-xl
-           shadow-xl
+            image-1
 
            "
           />
@@ -34,14 +43,8 @@ const Home: React.FC = () => {
             src="/images/home3.jpg"
             alt="forests"
             className="
-            absolute
-            top-40
-            left-10
-            z-1
-            rotate-[10deg]
-           object-cover h-48 w-80
-           rounded-xl
-           shadow-xl
+            image-2
+        
 
            "
           />
@@ -62,16 +65,10 @@ const Home: React.FC = () => {
           border-white
           p-3
           rounded-full
-
+                
           "
           >
-            <Link
-            to="/accounts"
-            >
-            Get Started
-            
-            </Link>
-
+            <Link to="/accounts">Get Started</Link>
           </button>
         </div>
       </div>

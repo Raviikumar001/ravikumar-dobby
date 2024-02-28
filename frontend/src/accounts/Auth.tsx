@@ -38,6 +38,9 @@ const Auth: React.FC = () => {
     try {
       dispatch(dispatchAction())
 
+
+
+
       const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}${authApi}`,{
         email,
         password
@@ -71,7 +74,7 @@ const Auth: React.FC = () => {
         }else if(Varient == 'LOGIN')
         {
           const message = err.response?.data?.message;
-         dispatch(registerFailure(message))
+         dispatch(loginFailure(message))
         }
     
       }
@@ -151,7 +154,7 @@ const Auth: React.FC = () => {
                 "
               onClick={toggleVarient}
             >
-              New to Platform? <span className="text-[#6420AA]">Sign up</span>
+              New to Platform?  { " "}<span className="text-[#6420AA] cursor-pointer">Sign up</span>
             </p>
           ) : (
             <p
@@ -160,8 +163,8 @@ const Auth: React.FC = () => {
              text-center
              "
             >
-              Already have an account?
-              <span onClick={toggleVarient} className="text-[#6420AA]">
+              Already have an account? { " "}
+              <span onClick={toggleVarient} className="text-[#6420AA] cursor-pointer">
                 Sign in
               </span>
             </p>

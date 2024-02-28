@@ -1,7 +1,7 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer,{initialState} from './slices/authSlice'; 
-
+import imageSlices from './slices/imageSlices';
 export type User ={
     _id: string,
     email:string
@@ -23,6 +23,7 @@ if(token)
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    image:imageSlices
   },
 });
 
