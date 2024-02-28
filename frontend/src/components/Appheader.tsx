@@ -2,7 +2,7 @@ import React from 'react'
 
 const Appheader:React.FC = () => {
   return (
-    <div className='h-screen'>
+    <div className=''>
         <div className='flex justify-around p-3 '>
             <div className='flex gap-1 items-center'>
             <h2 className='font-bold text-xl'>PhotoUp

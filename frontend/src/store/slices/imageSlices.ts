@@ -7,7 +7,7 @@ interface ImageUploadState {
   message: string | null
 }
 
-interface Image {
+export interface Image {
     _id: string; 
     creator: string; 
     imageId: string;

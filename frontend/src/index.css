@@ -7,6 +7,15 @@
 }
 
 
+.img-height{
+  height: 200px;
+  width: 280px;
+
+  object-fit: cover;
+  
+}
+
+
 
 .relative-container {
     position: relative; 
