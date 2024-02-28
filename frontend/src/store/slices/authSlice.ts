@@ -76,7 +76,7 @@ const authSlice = createSlice({
       localStorage.removeItem('user');
       localStorage.removeItem('token');
     },
-    // ... similar reducers for loginStart, loginSuccess, loginFailure, logout
+    
   },
 });
 
