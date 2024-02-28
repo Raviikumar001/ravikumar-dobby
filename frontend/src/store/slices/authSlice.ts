@@ -32,6 +32,11 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
     },
+    defaultState(state){
+      state.loading = false;
+      state.error = null;
+     
+    },
     loginSuccess(state,action: PayloadAction<Payload>) {
         state.isLoggedIn = true;
         state.loading = false;
@@ -65,6 +70,12 @@ const authSlice = createSlice({
      
         state.error = action.payload;
     },
+
+    logout() {
+       
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+    },
     // ... similar reducers for loginStart, loginSuccess, loginFailure, logout
   },
 });
@@ -72,7 +83,9 @@ const authSlice = createSlice({
 export const { registerStart, registerSuccess, registerFailure,
     loginFailure,
     loginStart,
-    loginSuccess
+    loginSuccess,
+    logout,
+    defaultState
     
     
     

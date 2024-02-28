@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import LoadingComponent from "../components/LoadingComponent";
 import MessageComponent from "../components/MessageComponent";
-import { registerStart,registerSuccess, registerFailure,loginStart,loginSuccess,loginFailure  } from "../store/slices/authSlice";
+import { registerStart,registerSuccess, registerFailure,loginStart,loginSuccess,loginFailure 
+,defaultState
+} from "../store/slices/authSlice";
 import { Link } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
@@ -22,10 +24,14 @@ const Auth: React.FC = () => {
       setEmail("");
       setPassword("");
       setVarient("REGISTER");
+      dispatch(defaultState())
+
     } else {
       setEmail("");
       setPassword("");
       setVarient("LOGIN");
+      dispatch(defaultState())
+
     }
   }, [Varient]);
 
@@ -34,6 +40,16 @@ const Auth: React.FC = () => {
     e.preventDefault();
     const authApi = Varient === "LOGIN" ?"/v1/auth/login" : "/v1/auth/register"  ;
     const dispatchAction = Varient === "LOGIN" ? loginStart : registerStart;
+
+    if((email || password) ==='')
+    {
+      dispatch(loginFailure("Fielda are empty !"));
+      return;
+    }else if(password.length<4)
+    {
+      dispatch(loginFailure("Password should be greater than 3 chars"));
+      return;
+    }
 
     try {
       dispatch(dispatchAction())

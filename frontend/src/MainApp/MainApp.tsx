@@ -6,13 +6,15 @@ import { fetchImagesStart, fetchImagesSuccess } from '../store/slices/imageSlice
 import toast, { Toaster } from 'react-hot-toast';
 import Placeholder from '../components/Placeholder';
 import Appheader from '../components/Appheader';
-
+import ImageList from '../components/ImagesList';
+import { Link } from 'react-router-dom';
 const MainApp:React.FC = () => {
 
   const dispatch = useDispatch();
   const {user,token} = useSelector((state:RootState)=> state.auth);
   const {images} = useSelector((state:RootState)=> state.image);
-  const fetchTasks = async () => {
+
+  const fetchImages = async () => {
 
     dispatch(fetchImagesStart());
     const stringToken = token ? token?.replace(/"/g, "") : "";
@@ -36,7 +38,7 @@ const MainApp:React.FC = () => {
   };
 
 useEffect(()=> {
-  fetchTasks();
+  fetchImages();
 }, [])
 
 console.log(images);
@@ -53,10 +55,87 @@ console.log(images);
     <Appheader />
 
 
-    {/* {
+    <div
+    className='
+    mr-10
+  ml-10
+ md:mr-[20%]
+ md:ml-[20%]
+ lg:mr-[30%]
+ lg:ml-[30%]
+    grid
+    grid-cols-1
+    md:grid-cols-2
+    
+    gap-1
+    '
+    >
+    <Link to="/app/upload">
+        <button
+          type="submit"
+          className="block 
+          
+          
+                text-white
+                rounded-full
+                
+                mt-5
+                p-2
+                bg-[#6420AA]
+                w-full
+              disabled:bg-gray-400
+              mb-5
+              
+                "
+        >
+          Upload Images
+        </button>
+      </Link>
+
+      <Link to="/app/search">
+        <button
+          type="submit"
+          className="block 
+          
+          
+                text-white
+                rounded-full
+                
+                mt-5
+                p-2
+                bg-[#6420AA]
+                w-full
+              disabled:bg-gray-400
+              mb-5
+              
+                "
+        >
+          Search Images
+        </button>
+      </Link>
+    </div>
+
+    {
     !(images.length>0)?
-      <Placeholder />
-  } */}
+      <Placeholder />:
+      <div
+      className="
+      mt-10
+      flex
+      justify-center
+      mr-[10%]
+      ml-[10%]
+
+      "
+      >
+      
+      <ImageList Images={ images} />
+
+      </div>
+  }
+
+    
+
 
     </div>
   )
