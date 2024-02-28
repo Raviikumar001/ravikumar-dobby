@@ -6,7 +6,7 @@ const connectDB  =require('./db/connect');
 require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
-
+const imageRoutes = require('./routes/imageRoutes');
 
 
 const app = express();
@@ -21,6 +21,7 @@ app.use(cors({
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use("/v1/auth", authRoutes);
+app.use("/v1/api",imageRoutes);
 app.use('/', (req,res)=> {
     res.send("Welcome to Upload photos");
 })
