@@ -1,13 +1,22 @@
 import React, { useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
 import LoadingComponent from "../components/LoadingComponent";
+import MessageComponent from "../components/MessageComponent";
+import { registerStart,registerSuccess, registerFailure,loginStart,loginSuccess,loginFailure  } from "../store/slices/authSlice";
 import { Link } from "react-router-dom";
+import axios, { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 type VARIENT = "LOGIN" | "REGISTER";
 
 const Auth: React.FC = () => {
   const [Varient, setVarient] = useState<VARIENT>("LOGIN");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch(); 
+  const { error,loading } = useSelector((state: RootState) => state.auth);
 
+  let navigate = useNavigate();
   const toggleVarient = useCallback(() => {
     if (Varient === "LOGIN") {
       setEmail("");
@@ -20,7 +29,57 @@ const Auth: React.FC = () => {
     }
   }, [Varient]);
 
-  console.log(Varient);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const authApi = Varient === "LOGIN" ?"/v1/auth/login" : "/v1/auth/register"  ;
+    const dispatchAction = Varient === "LOGIN" ? loginStart : registerStart;
+
+    try {
+      dispatch(dispatchAction())
+
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}${authApi}`,{
+        email,
+        password
+      })
+
+      console.log(response);
+      if(response)
+      {   
+         if (Varient === 'REGISTER'){
+          const user = response.data?.user;
+          const token = response.data?.token.replace(/"/g, '');
+          dispatch(registerSuccess({user,token}));
+          navigate('/app');
+         }else if(Varient == 'LOGIN')
+         {
+            const user = response.data?.user;
+          const token = response.data?.token.replace(/"/g, '');
+      
+          dispatch(loginSuccess({user,token}))
+          navigate('/app');
+         }
+
+      }
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message: string }>;
+      console.log(error)
+      if (err.response) { 
+        if (Varient === 'REGISTER'){
+          const message = err.response?.data?.message;
+         dispatch(registerFailure(message))
+        }else if(Varient == 'LOGIN')
+        {
+          const message = err.response?.data?.message;
+         dispatch(registerFailure(message))
+        }
+    
+      }
+    }
+  };
+
+
+
   return (
     <div
       className="h-screen
@@ -38,7 +97,7 @@ const Auth: React.FC = () => {
         <div
           className="
              bg-white
-             px-4
+             px-10
              py-8
              border
              rounded-lg
@@ -53,7 +112,7 @@ const Auth: React.FC = () => {
           </h2>
 
           <h2 className="text-2xl">{Varient == "LOGIN" ? "Sign in" : "Sign up"}</h2>
-          <form>
+          <form  onSubmit={(e) => handleSubmit(e)}>
             <h2 className="text-sm font-semibold pt-3 text-gray-500">Email</h2>
             <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" className="p-2 mt-2 border border-gray-500 rounded-md" />
             <h2 className="text-sm font-semibold pt-3 text-gray-500">Password</h2>
@@ -66,9 +125,10 @@ const Auth: React.FC = () => {
                      p-2 border border-gray-500 rounded-md"
             />
 
-            <LoadingComponent message={Varient == "LOGIN" ? "Authenticating" : "Creating User"} />
+        {loading&&    <LoadingComponent message={Varient == "LOGIN" ? "Authenticating" : "Creating User"} />}
+            {error && <MessageComponent message={error} />}
             <button
-              disabled
+            
               className="block 
                   text-white
                   rounded-full
@@ -106,6 +166,8 @@ const Auth: React.FC = () => {
               </span>
             </p>
           )}
+
+          
         </div>
       </div>
     </div>
