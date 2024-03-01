@@ -27,11 +27,11 @@ const s3 = new S3Client({
 router.get("/get-images", AuthMiddleware, async (req, res) => {
   try {
     
-    const id = req.query.id;
-    console.log(id);
-    const userImages = await Image.find({ creator: id });
+  
+    console.log(req.userId);
+    const userImages = await Image.find({ creator: req.userId });
 
-    console.log(userImages);
+ 
     res.status(200).json({ userImages });
   } catch (error) {
     console.error("Error:", error);
@@ -66,7 +66,7 @@ router.post("/upload-image", AuthMiddleware, upload.single("image"), async (req,
     const publicUrl = await uploadedImageUrls(req.file);
 
     const newImage = new Image({
-      creator: req.query.id,
+      creator: req.userId,
       imageId: uuidv4(),
       imageName: req.body.Name,
       image: publicUrl,
